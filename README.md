@@ -25,18 +25,31 @@ You can find all scripted/human demo for simulated environments [here](https://d
 
 ### Installation
 ```
+    # Install miniconda (https://docs.conda.io/projects/miniconda/en/latest/)
+    
+    $ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    $ bash Miniconda3-latest-Linux-x86_64.sh
+
     $ conda env create --name=aloha  --file=conda_env.yaml
     $ conda activate aloha
-    $ mkdir data/sim_transfer_cube_scripted/
-    $ python3 record_sim_episodes.py --task_name sim_transfer_cube_scripted --dataset_dir ./data/sim_transfer_cube_scripted --num_episodes 50
+    $ mkdir -p data/sim_transfer_cube_scripted/
+    $ export MUJOCO_GL=egl
     $ pip install wandb
-    $ cd somewhere && git clone git@github.com:ARISE-Initiative/robomimic.git
-    $ cd somewhere/robomimic && git checkout diffusion-policy-mg
+    $ cd ..
+    $ git clone git@github.com:ARISE-Initiative/robomimic.git
+    $ cd robomimic && git checkout diffusion-policy-mg
     $ pip install -e .
     $ pip install diffusers
+    $ cd ../act-plus-plus
  
+    # 1. Try out the sim_transfer_cube_scripted dataset creation and model training
     $ export WANDB_DISABLED=true
-    $ python3 imitate_episodes.py --task_name sim_transfer_cube_scripted --ckpt_dir ./checkpoints --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200   --lr 1e-5 --seed 0 --num_steps 8
+    $ python3 record_sim_episodes.py --task_name sim_transfer_cube_scripted --dataset_dir ./data/sim_transfer_cube_scripted --num_episodes 50
+    $ python3 imitate_episodes.py --task_name sim_transfer_cube_scripted --ckpt_dir ./checkpoints/sim_transfer_cube_scripted --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200   --lr 1e-5 --seed 0 --num_steps 2000
+
+    # 2. Try out the sim_insertion_scripted dataset creation and model training
+    $ python3 record_sim_episodes.py --task_name sim_insertion_scripted --dataset_dir ./data/sim_insertion_scripted --num_episodes 50
+    $ python3 imitate_episodes.py --task_name sim_insertion_scripted --ckpt_dir ./checkpoints/sim_insertion_scripted --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200   --lr 1e-5 --seed 0 --num_steps 2000
 ```
 - also need to install https://github.com/ARISE-Initiative/robomimic/tree/r2d2 (note the r2d2 branch) for Diffusion Policy by `pip install -e .`
 
