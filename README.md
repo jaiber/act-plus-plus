@@ -30,11 +30,12 @@ You can find all scripted/human demo for simulated environments [here](https://d
     $ mkdir data/sim_transfer_cube_scripted/
     $ python3 record_sim_episodes.py --task_name sim_transfer_cube_scripted --dataset_dir ./data/sim_transfer_cube_scripted --num_episodes 50
     $ pip install wandb
-    $ git clone https://github.com/ARISE-Initiative/robomimic.git
-    $ mv robomimic robomimic1
-    $ mv robomimic1/robomimic .
+    $ cd somewhere && git clone git@github.com:ARISE-Initiative/robomimic.git
+    $ cd somewhere/robomimic && git checkout diffusion-policy-mg
+    $ pip install -e .
     $ pip install diffusers
-
+ 
+    $ export WANDB_DISABLED=true
     $ python3 imitate_episodes.py --task_name sim_transfer_cube_scripted --ckpt_dir ./checkpoints --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200   --lr 1e-5 --seed 0 --num_steps 8
 ```
 - also need to install https://github.com/ARISE-Initiative/robomimic/tree/r2d2 (note the r2d2 branch) for Diffusion Policy by `pip install -e .`

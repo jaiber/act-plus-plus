@@ -113,7 +113,8 @@ class DETRVAE(nn.Module):
                 pos_embed = self.pos_table.clone().detach()
                 pos_embed = pos_embed.permute(1, 0, 2)  # (seq+1, 1, hidden_dim)
                 # query model
-                encoder_output = self.encoder(encoder_input, pos_embed=pos_embed, mask=is_pad, query_embed=self.query_embed)
+                encoder_output = self.encoder(encoder_input, pos=pos_embed, src_key_padding_mask=is_pad)
+                #encoder_output = self.encoder(encoder_input, pos_embed=pos_embed, mask=is_pad, query_embed=self.query_embed)
                 encoder_output = encoder_output[0] # take cls output only
                 latent_info = self.latent_proj(encoder_output)
                 
@@ -282,7 +283,8 @@ def build(args):
     if args.no_encoder:
         encoder = None
     else:
-        encoder = build_transformer(args)
+        #encoder = build_transformer(args)
+        encoder = build_encoder(args)
 
     model = DETRVAE(
         backbones,
